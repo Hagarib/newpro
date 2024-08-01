@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Operation</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+   <h1>Sales Administration</h1>
+   <form id="productForm">
+        <div class="formitem">
+            <label for="productName">Product Name:</label>
+            <input type="text" name="productName" id="productName">
+            <span class="error" id="productNameError">Please enter a valid product name (letters only, more than 3 characters)</span>
+        </div>
+        <div class="formitem">
+            <label for="kiloprice">Kilo Price:</label>
+            <div class="input-container">
+                <input type="text" name="kiloprice" id="kiloprice">
+                <span class="text-end">L.E</span>
+            </div>
+            <span class="error" id="kilopriceError">Please enter a valid kilo price</span>
+        </div>
+        <div class="formitem">
+            <label for="tonprice">Ton Price:</label>
+            <div class="input-container">
+                <input type="text" name="tonprice" id="tonprice">
+                <span class="text-end">L.E</span>
+            </div>
+            <span class="error" id="tonpriceError">Please enter a valid ton price</span>
+        </div>
+        <div class="formitem">
+            <label for="Pricecheck">Price of the Check:</label>
+            <div class="input-container">
+                <input type="text" name="Pricecheck" id="Pricecheck">
+                <span class="text-end">L.E</span>
+            </div>
+            <span class="error" id="PricecheckError">Please enter a valid check price</span>
+        </div>
+        <div class="formitem">
+            <label for="type">Product Type:</label>
+            <select name="type" id="type">
+                <option value=""  disabled selected hidden>Select your option</option>
+                <option value="cereals">Cereals</option>
+                <option value="feed">Feed</option>
+            </select>
+            <span class="error" id="typeError">Please select a product type</span>
+        </div>
+        <div class="formitem">
+            <label for="Description">Product Description:</label>
+            <select name="Description" id="Description">
+                <option value=""  disabled selected hidden>Select your option</option>
+                <option value="highquality">High Quality</option>
+                <option value="averagequality">Average Quality</option>
+            </select>
+            <span class="error" id="DescriptionError">Please select a product description</span>
+
+        </div>
+        <div class="formitem">
+            <button type="button" id="addProduct" >Add Product</button>
+            <button type="button" id="clear">clear</button>
+        </div>
+    </form>
+
+    <h1>Product List</h1>
+
+        <input type="search" class="search-bar" placeholder="Search product"   id="searchInput">
+       
+   
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>#</th> 
+                <th>Product Name</th>
+                <th>Kilo Price</th>
+                <th>Ton Price</th>
+                <th>Price Check</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        
+        <tbody id="productList">
+        </tbody>
+    </table>
+    <button type="button" id="delete">DELETE ALL</button> 
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Are you sure you want to delete all products?</p>
+            <button id="confirm-delete">Yes, delete all</button>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
