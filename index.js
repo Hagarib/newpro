@@ -1,8 +1,11 @@
 
-/*********************************************************** GET DATA FROM LOCALSTORAGE*******************************************************************/
 document.addEventListener('DOMContentLoaded', () => {
-    const productData = JSON.parse(localStorage.getItem('productData')) || [];
+   /*********************************************************** GET DATA FROM LOCALSTORAGE*******************************************************************/
+    const productData = JSON.parse(localStorage.getItem('productData')) ;
     renderProductList(productData);
+
+
+    /*********************************************************** PRICE AT ACTIVE *******************************************************************/
 
     document.querySelectorAll('input[type="text"]').forEach(input => {
         input.addEventListener('focus', () => {
@@ -17,13 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchInput').addEventListener('input', searchProducts);
    
 });
-
-
-document.getElementById('clear').addEventListener('click', function() {
-    document.getElementById('productForm').reset();
-});
-
-
 
 /*********************************************************** ADD PRODUCT BUTTON *******************************************************************/
 function validateProductName() {
@@ -128,15 +124,66 @@ document.getElementById('addProduct').addEventListener('click', function(event) 
     }
 });
 
+/*********************************************************** CLEAR INPUTES *******************************************************************/
+document.getElementById('clear').addEventListener('click', function() {
+    document.getElementById('productForm').reset();
+});
 
 
 
+/*********************************************************** search about product *******************************************************************/
+
+function searchProducts() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const productData = JSON.parse(localStorage.getItem('productData')) || [];
+    const filteredProducts = productData.filter(product => {
+        return product.productName.toLowerCase().includes(searchInput) ||
+               product.type.toLowerCase().includes(searchInput) ||
+               product.Description.toLowerCase().includes(searchInput);
+    });
+    renderProductList(filteredProducts);
+}
 
 
+/*********************************************************** LIST PRODUCT  *******************************************************************/
+function renderProductList(productData) {
+    const productList = document.getElementById('productList');
+    productList.innerHTML = '';
+    productData.forEach((product, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${product.productName} </td>
+            <td>${product.kiloprice} L.E</td>
+            <td>${product.tonprice} L.E</td>
+            <td>${product.Pricecheck} L.E</td>
+            <td>${product.type}</td>
+            <td>${product.Description}</td>
+            <td class="button-cell">
+                <button class="edit-button" data-index="${index}">Edit</button>
+                <button class="delete-button" data-index="${index}">Delete</button>
+            </td>
+        `;
+        productList.appendChild(tr);
+    });
 
+    document.querySelectorAll('.edit-button').forEach(button => {
+        button.addEventListener('click', handleEdit);
+    });
 
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', handleDelete);
+    });
+}
 
-
+/*********************************************************** DELETE  ITEM BUTTON *******************************************************************/
+function handleDelete(event) {
+    const index = event.target.dataset.index;
+    const productData = JSON.parse(localStorage.getItem('productData'));
+    productData.splice(index, 1);
+    localStorage.setItem('productData', JSON.stringify(productData));
+    renderProductList(productData);
+}
 /*********************************************************** EDIT PRODUCT BUTTON *******************************************************************/
 function handleEdit(event) {
     const index = event.target.dataset.index;
@@ -195,7 +242,9 @@ function handleEdit(event) {
     };
 }
 
-/*********************************************************** DELETE ALL BUTTON *******************************************************************/
+
+
+/*********************************************************** DELETE ALL ITEMS BUTTON *******************************************************************/
 document.getElementById('delete').addEventListener('click', function(event) {
     document.getElementById('modal').style.display = 'block';
 });
@@ -205,7 +254,7 @@ document.querySelector('.close').addEventListener('click', function(event) {
 });
 
 document.getElementById('confirm-delete').addEventListener('click', function(event) {
-    localStorage.removeItem('productData'); // Use removeItem to only remove the specific item
+    localStorage.removeItem('productData'); 
     renderProductList([]);
     document.getElementById('modal').style.display = 'none';
 });
@@ -215,59 +264,3 @@ window.onclick = function(event) {
         document.getElementById('modal').style.display = 'none';
     }
 };
-
-
-
-
-/*********************************************************** LIST PRODUCT  *******************************************************************/
-function renderProductList(productData) {
-    const productList = document.getElementById('productList');
-    productList.innerHTML = '';
-    productData.forEach((product, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${product.productName} </td>
-            <td>${product.kiloprice} L.E</td>
-            <td>${product.tonprice} L.E</td>
-            <td>${product.Pricecheck} L.E</td>
-            <td>${product.type}</td>
-            <td>${product.Description}</td>
-            <td class="button-cell">
-                <button class="edit-button" data-index="${index}">Edit</button>
-                <button class="delete-button" data-index="${index}">Delete</button>
-            </td>
-        `;
-        productList.appendChild(tr);
-    });
-
-    document.querySelectorAll('.edit-button').forEach(button => {
-        button.addEventListener('click', handleEdit);
-    });
-
-    document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', handleDelete);
-    });
-}
-
-/*********************************************************** DELETE  PRODUCT BUTTON *******************************************************************/
-function handleDelete(event) {
-    const index = event.target.dataset.index;
-    const productData = JSON.parse(localStorage.getItem('productData'));
-    productData.splice(index, 1);
-    localStorage.setItem('productData', JSON.stringify(productData));
-    renderProductList(productData);
-}
-/*********************************************************** search about product *******************************************************************/
-
-function searchProducts() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const productData = JSON.parse(localStorage.getItem('productData')) || [];
-    const filteredProducts = productData.filter(product => {
-        return product.productName.toLowerCase().includes(searchInput) ||
-               product.type.toLowerCase().includes(searchInput) ||
-               product.Description.toLowerCase().includes(searchInput);
-    });
-    renderProductList(filteredProducts);
-}
-
